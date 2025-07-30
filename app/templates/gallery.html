@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block title%} Галерея {% endblock %}
+
+{% block content%}
+    <p>Koshka.jpg</p>
+    <hr></hr>
+    {% if imgs %}
+        <div class="gallery">
+        {% for img in imgs%}
+        <img src="{{ url_for('static', filename='img/'+img) }}"
+            class="koshka"
+            alt="{{ img }}"
+            width="200"
+        >
+        {% endfor %}
+        </div>
+    {% else %}
+        <p>Фото пока нет</p>
+    {% endif %}
+    
+    <hr></hr>
+    <h2>Комментарии</h2>
+    <div class="comment">
+        <p>Оставить комментарий:</p>
+        <form method="post">
+            <div>
+                <label for="username">Ваше имя:</label>
+                <input type="text" name="username" required>
+            </div>
+            <div>
+                <label for="text">текст:</label>
+                <textarea rows="8" name="text" required></textarea>
+            </div>
+            <button type="submit">Отправить</button>
+        </form>
+    </div>
+    <hr></hr>
+    {% if comments %}
+        {% for comment in comments%}
+            <div class="usercomment">
+                <p class="username">{{ comment.name }}</p>
+                <p class="comment-text">{{ comment.text }}</p>
+            </div>
+            {% endfor %}
+    {% else %}
+        <p>комментариев нет</p>
+    {% endif %}
+{% endblock %}
