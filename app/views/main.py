@@ -1,5 +1,6 @@
-from flask import Blueprint, render_template, request, redirect
+from flask import Blueprint, render_template, request, redirect, jsonify, url_for
 import os
+import random
 from app import db
 from app.models import Comment
 
@@ -30,3 +31,18 @@ def gallery():
     imgs = [img for img in imgs if any(img.lower().endswith(ext) for ext in valid_ext)]
 
     return render_template('gallery.html', imgs=imgs, comments=comments)
+
+
+@main_bp.route('/api', methods=['GET'])
+def api():
+    img_folder = "app/static/img"
+    imgs = os.listdir(img_folder)
+    valid_ext = ['.jpg', '.jpeg', '.png']
+    imgs = [img for img in imgs if any(img.lower().endswith(ext) for ext in valid_ext)]
+
+    img = random.choice(imgs)
+    img_url = url_for("static", filename=f"img/{img}", _external=True)
+
+    return jsonify({"image": img, "url":img_url})
+
+
